@@ -1,10 +1,6 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
-import dotenv from "dotenv";
 
-import { serve } from "@hono/node-server";
-// 環境変数を読み込む
-dotenv.config();
 export const config = {
   runtime: "edge",
 };
@@ -15,15 +11,17 @@ app.get("/hello", (c) => {
   return c.json({ message: "Hello Hono!" });
 });
 
-// 開発環境でのみ実行されるサーバー設定
-// NODE_ENVがdevelopmentの場合のみサーバーを起動
-if (process.env.NODE_ENV === "development") {
-  const port = 8080;
-  console.log(`Server is running on http://localhost:${port}`);
+// 開発環境でのみ実行される部分
+if (process.env.npm_lifecycle_event === "dev") {
+  // 動的インポートで開発環境用のモジュールを読み込む
+  import("@hono/node-server").then(({ serve }) => {
+    const port = 8085;
+    console.log(`Server is running on http://localhost:${port}`);
 
-  serve({
-    fetch: app.fetch,
-    port,
+    serve({
+      fetch: app.fetch,
+      port,
+    });
   });
 }
 
