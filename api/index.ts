@@ -1,14 +1,26 @@
-import { Hono } from 'hono'
-import { handle } from 'hono/vercel'
+import { Hono } from "hono";
+import { handle } from "hono/vercel";
+
+import { serve } from "@hono/node-server";
 
 export const config = {
-  runtime: 'edge'
-}
+  runtime: "edge",
+};
 
-const app = new Hono().basePath('/api')
+const app = new Hono().basePath("/api");
 
-app.get('/', (c) => {
-  return c.json({ message: 'Hello Hono!' })
-})
+app.get("/", (c) => {
+  return c.json({ message: "Hello Hono!" });
+});
 
-export default handle(app)
+// 開発環境でのみ実行されるサーバー設定
+
+const port = 8080;
+console.log(`Server is running on http://localhost:${port}`);
+
+serve({
+  fetch: app.fetch,
+  port,
+});
+
+export default handle(app);

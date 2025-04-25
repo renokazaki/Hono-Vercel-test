@@ -2,12 +2,16 @@
   "name": "my-app",
   "scripts": {
     "start": "vercel dev",
-    "deploy": "vercel"
+    "deploy": "vercel",
+    "dev": "tsx watch api/index.ts"
   },
   "dependencies": {
     "hono": "^4.7.7"
   },
   "devDependencies": {
+    "@hono/node-server": "^1.14.1",
+    "dotenv": "^16.5.0",
+    "tsx": "^4.19.3",
     "vercel": "^32.4.1"
   }
 }
